@@ -3,9 +3,15 @@
 #include "external/gsKit/include/gsKit.h"
 #include "external/gsKit/include/dmaKit.h"
 
+// This object ptr holds the state of the GS. Used in gsKit.
 GSGLOBAL* settings = NULL;
+
+// The clear color constant.
 const uint64_t CLEAR_COLOR = GS_SETREG_RGBAQ(0x00, 0x00, 0x00, 0x80, 0x00);
 
+/**
+ * Initializes the graphics of the PS2 and sets up the DMA.
+ */
 void InitScreenSettings() {
     settings = gsKit_init_global();
     settings->PrimAlphaEnable = GS_SETTING_ON;
@@ -22,6 +28,10 @@ void InitScreenSettings() {
     gsKit_mode_switch(settings, GS_ONESHOT);
 }
 
+/**
+ * Flips the buffers -- presents the currently drawn objects.
+ * @param gsGlobal the global object that was used to init the GS.
+ */
 void flipScreen(GSGLOBAL* gsGlobal)
 {
     gsKit_queue_exec(gsGlobal);
